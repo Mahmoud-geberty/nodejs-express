@@ -13,7 +13,14 @@ const http = require('http');
 	//createServer is called everytime a request is made
 
 const server = http.createServer( (req, res) => {
-	console.log(req);
+	// console.log(req.method, req.headers);
+//	process.exit();//unregisters the listener
+	res.setHeader('Content-Type', 'text/html');
+	res.write("<html>");
+	res.write("<head><title>my node app</title></head>");
+	res.write("<body><h1>welcome to my first node app</h1></body>");
+	res.write("</html>");
+	res.end();
 } )
 
 server.listen(3000);// 3000 = portnumber
