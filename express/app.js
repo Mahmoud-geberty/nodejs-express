@@ -1,22 +1,24 @@
 //app.js
-const http = require('http');
 const express = require('express');
+const bodyParser = require('body-parser');
 
-const app = express(); // app is a valid request handler and used for server
+const app = express(); 
 
-app.use ('/', (req, res, next) => {
-	console.log("This part always runs");
-	next();
-} )
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use ('/add-product', (req, res, next) => {
+app.get('/add-product', (req, res, next) => {
 	console.log("add product middleware");
-	res.send("<h1>the 'add product' page</h1>");
-} )
+	res.send("<form action='/product' method='post'><input name='title'/><button type='submit'>add</button></form>");
+} );
 
-app.use ('/', (req, res, next) => {
-	console.log("default/404 page");
-	// res.send("<h1>404 ERROR page not found!!!</h1>");
-} )
+app.post('/product', (req, res, next) => {
+	console.log(req.body);
+	res.redirect('/');
+} );
+
+app.get('/', (req, res, next) => {
+	console.log("Enter the / middleware");
+	res.send("<h1>Hello from Express</h1>");
+} );
 
 app.listen(8000);
