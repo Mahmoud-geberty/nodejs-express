@@ -5,16 +5,19 @@ const rootDir = require('../util/path');
 
 const router = express.Router();
 
+const products = [];
+
 router.get('/add-product', (req, res, next) => {
-	console.log("add product middleware");
+	console.log("\nadd product middleware");
 	res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
 } );
 
 router.post('/add-product', (req, res, next) => {
-	console.log('receiveing post request at /product ...')
-	console.log(req.body);
-	console.log('\nredirecting to / ...')
+	console.log('\nreceiveing post request at /product ...')
+	products.push({title: req.body.title});
+	console.log('redirecting to / ...')
 	res.redirect('/');
 } );
 
-module.exports = router;
+module.exports.routes = router;
+module.exports.products = products;
