@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const Cart = require('./cart');
+
 const p = path.join(
   path.dirname(process.mainModule.filename),
   'data',
@@ -27,53 +29,46 @@ module.exports = class Product {
   }
 
   save() {
-    //if the product already exists then just 
-    //update its content
-    if (this.id) {
-      getProductsFromFile(products => {
-        const existingProductIndex = products.findIndex(p => p.id === this.id);
+    getProductsFromFile(products => {
+      if (this.id) {
+        const existingProductIndex = products.findIndex(
+          prod => prod.id === this.id
+        );
         const updatedProducts = [...products];
         updatedProducts[existingProductIndex] = this;
         fs.writeFile(p, JSON.stringify(updatedProducts), err => {
           console.log(err);
         });
-      });
-    } else {
-      this.id = Math.random().toString();
-      getProductsFromFile(products => {
+      } else {
+        this.id = Math.random().toString();
         products.push(this);
         fs.writeFile(p, JSON.stringify(products), err => {
           console.log(err);
         });
-      });
-    }
+      }
+    });
   }
-    
+
+  static deleteById(id) {
+    getProductsFromFile(products => {
+      const product = products.find(prod => prod.id === id);
+      const updatedProducts = products.filter(prod => prod.id !== id);
+      fs.writeFile(p, JSON.stringify(updatedProducts), err => {
+        if (!err) {
+          Cart.deleteProduct(id, product.price);
+        }
+      });
+    });
+  }
 
   static fetchAll(cb) {
     getProductsFromFile(cb);
   }
 
-  static findOne(id, cb) {
+  static findById(id, cb) {
     getProductsFromFile(products => {
-      const productIndex = products.findIndex(p => p.id === id);
-      const product = products[productIndex];
+      const product = products.find(p => p.id === id);
       cb(product);
-      }
-    );
-  }
-
-  static deleteOne(id, cb) {
-    getProductsFromFile(products => {
-      const indexToDelete = products.findIndex(p => p.id === id);
-      const updatedProducts = [...products];
-      const deletedObj = updatedProducts.splice(indexToDelete, 1);
-      fs.writeFile(p, JSON.stringify(updatedProducts), err => {
-        console.log(err);
-      });
-      cb(deletedObj);
-    })
+    });
   }
 };
-
-  
