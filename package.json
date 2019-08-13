@@ -21,6 +21,9 @@
     "pug": "^2.0.3"
   },
   "nodemonConfig": {
-    "ignore": ["data/products.json", "data/cart.json"]
+    "ignore": [
+      "data/products.json",
+      "data/cart.json"
+    ]
   }
 }
