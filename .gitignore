@@ -1,1 +1,11 @@
-node_modules
+# nodejs npm modules
+/node_modules
+
+# node-cluster
+/pids
+*.sock
+
+# Vim
+.*.sw[a-z]
+*.un~i
+tags
