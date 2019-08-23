@@ -16,9 +16,14 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "mysql2": "^1.6.5",
+    "sequelize": "^5.14.0"
   },
   "nodemonConfig": {
-    "ignore": ["data/products.json", "data/cart.json"]
+    "ignore": [
+      "data/products.json",
+      "data/cart.json"
+    ]
   }
 }
